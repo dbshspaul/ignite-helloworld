@@ -45,9 +45,13 @@
     <properties>
         <ignite.version>2.4.0</ignite.version>
         <slf4j-version>1.7.7</slf4j-version>
-        <slf4j-log4j2-version>2.0.1</slf4j-log4j2-version>
-        <log4j2-version> 2.0.1</log4j2-version>
     </properties>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.0.0.RELEASE</version>
+    </parent>
 
 <dependencies>
     <dependency>
@@ -73,15 +77,17 @@
     </dependency>
 
     <dependency>
-        <groupId>org.apache.logging.log4j</groupId>
-        <artifactId>log4j-slf4j-impl</artifactId>
-        <version>${slf4j-log4j2-version}</version>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-web</artifactId>
     </dependency>
 
     <dependency>
-        <groupId>org.apache.logging.log4j</groupId>
-        <artifactId>log4j-core</artifactId>
-        <version>${log4j2-version}</version>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-security</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.security.oauth</groupId>
+        <artifactId>spring-security-oauth2</artifactId>
     </dependency>
 </dependencies>
 </project>
