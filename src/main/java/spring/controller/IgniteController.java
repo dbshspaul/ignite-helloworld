@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.cache.Cache;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 @Controller
@@ -30,13 +32,17 @@ public class IgniteController {
     public ResponseEntity<?> getAllCacheData() {
         Map<Object, Object> data = new HashMap<>();
         LOGGER.info("Cache reading Start");
-        try (QueryCursor cursor = cache.query(new ScanQuery((k, p) -> true))) {
-            for (Object p : cursor) {
-                IgniteBiTuple biTuple = (IgniteBiTuple) p;
-                data.put(biTuple.getKey(), biTuple.getValue());
+        try {
+            Iterator<Cache.Entry<String, String>> iter = cache.iterator();
+            while (iter.hasNext()){
+                Cache.Entry<String, String> entry = iter.next();
+                data.put(entry.getKey(), entry.getValue());
             }
+            LOGGER.info("Cache reading End");
+        } catch (Exception e) {
+            LOGGER.error("Error: " + e.getMessage());
+            return new ResponseEntity<Object>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        LOGGER.info("Cache reading End");
         if (data.isEmpty()) {
             return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
         } else {
